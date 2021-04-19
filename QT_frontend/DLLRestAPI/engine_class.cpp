@@ -115,6 +115,25 @@ void engine_class::edit_balance(int account_id, double new_balance) {
     });
 }
 
+// Gets the ammount of trans actions on the account.
+void engine_class::transaction_amount(int account_id) {
+    QString site_url = site_base_url + "/actions/" + QString().setNum(account_id);
+
+    QNetworkRequest request(site_url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    QNetworkReply *reply = p_manager->get(request);
+
+    connect(reply, &QNetworkReply::finished, this, [this]() {
+        QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
+        QJsonObject json_obj = get_json_object(*reply);
+
+        int ret_amount = json_obj["amount"].toInt();
+        emit result_ready(ret_amount);
+        reply->deleteLater();
+    });
+}
+
 // Receives the request response message
 void engine_class::login_response() {
     QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
