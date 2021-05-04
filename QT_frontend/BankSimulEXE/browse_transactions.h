@@ -9,7 +9,6 @@
 namespace Ui {
 class browse_transactions;
 }
-
 class Main_window;
 
 class browse_transactions : public QDialog {
@@ -19,7 +18,6 @@ public:
     explicit browse_transactions(QWidget *parent = nullptr);
     ~browse_transactions();
     void transaction_menu(ids_t *ids, Main_window *main_wnd);
-    void show_timer_reset();
 
 private slots:
     void on_close_btn_clicked();
